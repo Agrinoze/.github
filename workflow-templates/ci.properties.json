@@ -1,0 +1,8 @@
+{
+    "name": "Agrinoze CI Workflow",
+    "description": "Agrinoze CI workflow template.",
+    "iconName": "ci-1",
+    "categories": [
+        "JavaScript"
+    ]
+}

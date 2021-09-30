@@ -1,0 +1,36 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: install dependencies 
+        run: npm install
+
+      - name: test
+        run: npm run test:cov
+        
+      - name: Run eslint with reviewdog
+        # You may pin to the exact commit or the version.
+        # uses: reviewdog/action-eslint@282bf9d07bc87c519d17ca3a70e94b54232b03e0
+        uses: reviewdog/action-eslint@v1.14.0
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
